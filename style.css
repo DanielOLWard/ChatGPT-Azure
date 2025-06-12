@@ -87,26 +87,44 @@ input[type="text"] {
     color: #F8FFF4; /* Cor do texto */
 }
 
-input[type="text]"] ::placeholder{
-    color : #b3b3b3;
+/* Cor do texto de dica (placeholder) dentro do input */
+input[type="text"]::placeholder {
+    color: #b3b3b3; /* Cinza claro */
 }
 
-button{
-    padding: 12px 16px;
-    background: #B3001B;
-    color: #F8FFF4;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s;
+/* Estiliza o botão de envio */
+button {
+    padding: 12px 16px; /* Espaçamento interno */
+    background: #B3001B; /* Fundo vermelho */
+    color: #F8FFF4; /* Texto branco */
+    border: none; /* Remove a borda padrão */
+    border-radius: 8px; /* Bordas arredondadas */
+    font-size: 1rem; /* Tamanho da fonte */
+    font-weight: bold; /* Texto em negrito */
+    cursor: pointer; /* Cursor de clique */
+    transition: background-color 0.3s; /* Transição suave na mudança de cor */
 }
 
-button:hover{
-    background: #e50829;
+/* Efeito quando passa o mouse sobre o botão */
+button:hover {
+    background: #A10018; /* Tom mais escuro de vermelho */
 }
 
-button:active{
-    transform: scale(1.05);
+/* Efeito ao clicar no botão */
+button:active {
+    transform: scale(1.05); /* Leve aumento no tamanho do botão */
+}
+
+/* Personalização da barra de rolagem para navegadores baseados no WebKit */
+.chat-box::-webkit-scrollbar {
+    width: 8px; /* Largura da barra de rolagem */
+}
+
+.chat-box::-webkit-scrollbar-thumb {
+    background: #B3001B; /* Cor do "puxador" da rolagem */
+    border-radius: 4px; /* Bordas arredondadas do puxador */
+}
+
+.chat-box::-webkit-scrollbar-track {
+    background: #2e2c2c; /* Fundo da barra de rolagem */
 }

@@ -1,71 +1,84 @@
+// Função assíncrona chamada quando o botão "Enviar" é clicado
 async function sendMessage() {
-    const chatBox = document.getElementById("chatBox");
+  // Seleciona a área de mensagens (chat)
+  const chatBox = document.getElementById("chatBox");
 
-    const userInput = document.getElementById("userInput");
+  // Seleciona o campo de entrada de texto
+  const userInput = document.getElementById("userInput");
 
-    const userMessage = userInput.value;
+  // Captura o valor digitado pelo usuário
+  const userMessage = userInput.value;
 
-    if(!userMessage) return;
+  // Se o campo estiver vazio, não faz nada (retorna)
+  if (!userMessage) return;
 
-    const userDiv = document.createElement("div");
-    userDiv.className = "user-menssage message"
-    userDiv.textContent = userMessage;
-    chatBox.appendChild(userDiv);
+  // Cria um novo elemento <div> para exibir a mensagem do usuário
+  const userDiv = document.createElement("div");
+  userDiv.className = "user-message message"; // Aplica as classes CSS
+  userDiv.textContent = userMessage; // Define o conteúdo da mensagem
+  chatBox.appendChild(userDiv); // Adiciona a mensagem ao chat
 
-    userInput.value = "";
+  // Limpa o campo de entrada após o envio
+  userInput.value = "";
 
-    chatBox.scrollTop = chatBox.scrollHeight;
+  // Faz a rolagem automática para o final do chat
+  chatBox.scrollTop = chatBox.scrollHeight;
 
-    const endpoint = "";
-    const apiKey = "";
-    const deploymentId = "";
-    const apiVersion = "";
 
-    const url = `${endpoint}/openai/deployments/${deploymentId}/chat/completions?api-version=${apiVersion}`;
+  // Monta a URL completa para chamada da API
+  const url = `${endpoint}/openai/deployments/${deploymentId}/chat/completions?api-version=${apiVersion}`;
 
-    const data ={
-        messages: [{role: "user", content: userMessage}],
-        max_tokens:101,
-        temperature: 0.2, 
-    };
+  // Dados enviados para a API
+  const data = {
+    messages: [{ role: "user", content: userMessage }], // Mensagem do usuário
+    max_tokens: 100, // Máximo de tokens que o bot pode responder
+    temperature: 0.2, // Grau de criatividade da resposta (0 = mais precisa, 1 = mais criativa)
+  };
 
-    const headers = {
-        "Content-Type": "aplication/json",
-        "api-key": apiKey,
-    };
+  // Cabeçalhos da requisição (tipo e chave da API)
+  const headers = {
+    "Content-Type": "application/json",
+    "api-key": apiKey, // Autorização para acessar a API
+  };
 
-    try {
-        const response = await fetch(url,{
-            method: "Post",
-            headers: headers,
-            body: JSON.stringify(data)
-        });
+  // Bloco try/catch para lidar com erros na comunicação
+  try {
+    // Faz a requisição POST para a API
+    const response = await fetch(url, {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify(data),
+    });
 
-        if (response.ok) {
-            const result = await response.JSON()
-            const botMessage = result.choices[0].message.content;
+    // Se a resposta for bem-sucedida
+    if (response.ok) {
+      const result = await response.json(); // Converte a resposta em JSON
+      const botMessage = result.choices[0].message.content; // Pega o conteúdo da resposta do bot
 
-            const botDiv = document.createElement("div");
-            botDiv.className = "bot-message message";
-            botDiv.textContent = botMessage;
-            chatBox.appendChild(botDiv);
+      // Cria um novo elemento <div> com a resposta do bot
+      const botDiv = document.createElement("div");
+      botDiv.className = "bot-message message";
+      botDiv.textContent = botMessage;
+      chatBox.appendChild(botDiv); // Adiciona ao chat
 
-            chatBox.scrollTop = chatBox.scrollHeight;
+      // Faz rolagem automática para o final
+      chatBox.scrollTop = chatBox.scrollHeight;
+    } else {
+      // Caso a API retorne erro
+      console.error("Erro na requisição", response.status, response.statusText);
 
-        } else {
-            console.error("Erro na requisição", response.status, response.statusText);
-
-            const botDiv = document.createElement("div");
-            botDiv.className = "bot-message message";
-            botDiv.textContent = "Erro ao se comunicar com o servico";
-            chatBox.appendChild(botDiv);
-        }
-
-    } catch (error) {
-        console.error("Error", error);
-
-        const botDiv = document.createElement("div");
-        botDiv.textContent = "Erro ao se comunicar com o servico";
-        chatBox.appendChild(botDiv);
+      const botDiv = document.createElement("div");
+      botDiv.className = "bot-message message";
+      botDiv.textContent = "Erro ao se comunicar com o serviço.";
+      chatBox.appendChild(botDiv);
     }
+  } catch (error) {
+    // Captura erros de rede ou exceções inesperadas
+    console.error("Erro:", error);
+
+    const botDiv = document.createElement("div");
+    botDiv.className = "bot-message message";
+    botDiv.textContent = "Erro ao se comunicar com o serviço.";
+    chatBox.appendChild(botDiv);
+  }
 }
